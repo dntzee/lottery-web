@@ -21,46 +21,46 @@ const BASE_HEIGHT = 1080;
 
 
 let TOTAL_CARDS,
-    nowScenes,
-    btns = {
-      enter: document.querySelector("#enter"),
-      lotteryBar: document.querySelector("#lotteryBar")
-    },
-    prizes,
-    EACH_COUNT,
-    ROW_COUNT = 7,
-    COLUMN_COUNT = 17,
-    COMPANY,
-    HIGHLIGHT_CELL = [],
-    // 当前的比例
-    Resolution = 1;
+  nowScenes,
+  btns = {
+    enter: document.querySelector("#enter"),
+    lotteryBar: document.querySelector("#lotteryBar")
+  },
+  prizes,
+  EACH_COUNT,
+  ROW_COUNT = 7,
+  COLUMN_COUNT = 17,
+  COMPANY,
+  HIGHLIGHT_CELL = [],
+  // 当前的比例
+  Resolution = 1;
 
 let camera,
-    scene,
-    renderer,
-    controls,
-    threeDCards = [],
-    targets = {
-      table: [],
-      sphere: []
-    };
+  scene,
+  renderer,
+  controls,
+  threeDCards = [],
+  targets = {
+    table: [],
+    sphere: []
+  };
 
 let selectedCardIndex = [],
-    rotate = false,
-    basicData = {
-      prizes: [], //奖品信息
-      users: [], //所有人员
-      luckyUsers: {}, //已中奖人员
-      leftUsers: [] //未中奖人员
-    },
-    interval,
-    // 当前抽的奖项，从最低奖开始抽，直到抽到大奖
-    currentPrizeIndex,
-    //当前选择的奖品
-    currentPrize,
-    // 正在抽奖
-    isLotting = false,
-    currentLuckys = [];
+  rotate = false,
+  basicData = {
+    prizes: [], //奖品信息
+    users: [], //所有人员
+    luckyUsers: {}, //已中奖人员
+    leftUsers: [] //未中奖人员
+  },
+  interval,
+  // 当前抽的奖项，从最低奖开始抽，直到抽到大奖
+  currentPrizeIndex,
+  //当前选择的奖品
+  currentPrize,
+  // 正在抽奖
+  isLotting = false,
+  currentLuckys = [];
 
 initAll();
 
@@ -75,7 +75,7 @@ function initAll() {
   //   success(data) {
   //     // 获取基础数据
   //     prizes = data.cfgData.prizes;//奖项
-  //     EACH_COUNT = data.cfgData.EACH_COUNT;//抽奖公式["1","2"] 一等奖1,二等奖3
+  //     EACH_COUNT = data.cfgData.EACH_COUNT;//抽奖公式["1","2"] 一等奖1,二等奖3 
   //     COMPANY = data.cfgData.COMPANY;//公司名
   //     HIGHLIGHT_CELL = createHighlight();
   //     basicData.prizes = prizes;//基础奖项配置
@@ -132,7 +132,7 @@ function initStyle() {
 function startMock() {
 
   prizes = mockData.prizes;//奖项
-  EACH_COUNT = mockData.EACH_COUNT;//抽奖公式["1","2"] 一等奖1,二等奖3
+  EACH_COUNT = mockData.EACH_COUNT;//抽奖公式["1","2"] 一等奖1,二等奖3 
   COMPANY = mockData.COMPANY;//公司名
   HIGHLIGHT_CELL = createHighlight();
   basicData.prizes = prizes;//基础奖项配置
@@ -147,9 +147,9 @@ function startMock() {
   let prizeIndex = basicData.prizes.length - 1
   for (; prizeIndex > -1; prizeIndex--) {
     if (
-        mockData.luckyData[prizeIndex] &&
-        mockData.luckyData[prizeIndex].length >=
-        basicData.prizes[prizeIndex].count
+      mockData.luckyData[prizeIndex] &&
+      mockData.luckyData[prizeIndex].length >=
+      basicData.prizes[prizeIndex].count
     ) {
       continue;
     }
@@ -176,23 +176,23 @@ function startMock() {
 
 function initCards() {
   let member = basicData.users,
-      showCards = [],
-      length = member.length;
+    showCards = [],
+    length = member.length;
 
   let isBold = false,
-      showTable = basicData.leftUsers.length === basicData.users.length,
-      index = 0,
-      totalMember = member.length,
-      position = {
-        x: (140 * COLUMN_COUNT - 20) / 2,
-        y: (180 * ROW_COUNT - 20) / 2
-      };
+    showTable = basicData.leftUsers.length === basicData.users.length,
+    index = 0,
+    totalMember = member.length,
+    position = {
+      x: (140 * COLUMN_COUNT - 20) / 2,
+      y: (180 * ROW_COUNT - 20) / 2
+    };
 
   camera = new THREE.PerspectiveCamera(
-      45,
-      mockData.width / mockData.height,
-      1,
-      10000
+    45,
+    mockData.width / mockData.height,
+    1,
+    10000
   );
   camera.position.z = 3000;
 
@@ -202,10 +202,10 @@ function initCards() {
     for (let j = 0; j < COLUMN_COUNT; j++) {
       isBold = HIGHLIGHT_CELL.includes(j + "-" + i);
       var element = createCard(
-          member[index % length],
-          isBold,
-          index,
-          showTable
+        member[index % length],
+        isBold,
+        index,
+        showTable
       );
 
       var object = new THREE.CSS3DObject(element);
@@ -376,7 +376,7 @@ function bindEvent() {
         return false;
       }
       let perCount = EACH_COUNT[currentPrizeIndex],
-          leftCount = basicData.leftUsers.length
+        leftCount = basicData.leftUsers.length
       const notAllowed = perCount > leftCount
 
       if (notAllowed) {
@@ -393,19 +393,19 @@ function bindEvent() {
 
 
     switch (target) {
-        // 显示数字墙
+      // 显示数字墙
       case "welcome":
         switchScreen("enter");
         rotate = false;
         break;
-        //返回首页
+      //返回首页
       case "back":
 
         switchScreen("enter");
 
         rotate = false;
         break;
-        // 进入抽奖
+      // 进入抽奖
       case "awards":
         replaceMusic(currentPrize.awards)
 
@@ -417,10 +417,10 @@ function bindEvent() {
         rotate = true;
         switchScreen("lottery");
         break;
-        // 重置
+      // 重置
       case "reset":
         let doREset = window.confirm(
-            "是否确认重置数据，重置后，当前已抽的奖项全部清空？"
+          "是否确认重置数据，重置后，当前已抽的奖项全部清空？"
         );
         if (!doREset) {
           return;
@@ -439,21 +439,21 @@ function bindEvent() {
         resetMock();
         switchScreen("enter");
         break;
-        // 抽奖
+      // 抽奖
       case "lottery":
 
         //更新状态
         setLotteryStatus(true);
         // 每次抽奖前先保存上一次的抽奖数据
         // saveData();
-        //feat@把保存移除到roll点以后执行
+        //feat@把保存移除到roll点以后执行 
         saveMock()
         //feat@是否还有礼物
         if (!currentPrizeIndex) {
           addQipao(`没有可以抽取的奖品了`);
 
           let doREset = window.confirm(
-              "礼物已经抽完,是否重置礼物？"
+            "礼物已经抽完,是否重置礼物？"
           );
           if (!doREset) {
             return;
@@ -474,7 +474,7 @@ function bindEvent() {
         })
         addQipao(`正在抽取[${currentPrize.title}],调整好姿势`);
         break;
-        // 重新抽奖
+      // 重新抽奖
       case "reLottery":
         if (currentLuckys.length === 0) {
           addQipao(`当前还没有抽奖，无法重新抽取喔~~`);
@@ -490,7 +490,7 @@ function bindEvent() {
           lottery();
         });
         break;
-        // 导出抽奖结果
+      // 导出抽奖结果
       case "save":
         saveMock().then(res => {
           resetCard().then(res => {
@@ -510,7 +510,7 @@ function bindEvent() {
           });
         });
         // layer.open({
-        //   type: 1,
+        //   type: 1, 
         //   content: '<div></div>' //这里content是一个普通的String
         // });
 
@@ -599,28 +599,28 @@ function transform(targets, duration) {
     var target = targets[i];
 
     new TWEEN.Tween(object.position)
-        .to(
-            {
-              x: target.position.x,
-              y: target.position.y,
-              z: target.position.z
-            },
-            Math.random() * duration + duration
-        )
-        .easing(TWEEN.Easing.Exponential.InOut)
-        .start();
+      .to(
+        {
+          x: target.position.x,
+          y: target.position.y,
+          z: target.position.z
+        },
+        Math.random() * duration + duration
+      )
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .start();
 
     new TWEEN.Tween(object.rotation)
-        .to(
-            {
-              x: target.rotation.x,
-              y: target.rotation.y,
-              z: target.rotation.z
-            },
-            Math.random() * duration + duration
-        )
-        .easing(TWEEN.Easing.Exponential.InOut)
-        .start();
+      .to(
+        {
+          x: target.rotation.x,
+          y: target.rotation.y,
+          z: target.rotation.z
+        },
+        Math.random() * duration + duration
+      )
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .start();
 
     // new TWEEN.Tween(object.rotation)
     //     .to({
@@ -633,9 +633,9 @@ function transform(targets, duration) {
   }
 
   new TWEEN.Tween(this)
-      .to({}, duration * 2)
-      .onUpdate(render)
-      .start();
+    .to({}, duration * 2)
+    .onUpdate(render)
+    .start();
 }
 
 //旋转地球
@@ -644,18 +644,18 @@ function rotateBall() {
     console.log(Math.PI);
     scene.rotation.y = 0;
     new TWEEN.Tween(scene.rotation)
-        .to(
-            {
-              y: Math.PI * (currentPrize && currentPrize.circle || 8)
-            },
-            currentPrize && currentPrize.ROTATE_TIME || ROTATE_TIME
-        )
-        .onUpdate(render)
-        .easing(TWEEN.Easing.Exponential.InOut)
-        .start()
-        .onComplete(() => {
-          resolve();
-        });
+      .to(
+        {
+          y: Math.PI * (currentPrize && currentPrize.circle || 8)
+        },
+        currentPrize && currentPrize.ROTATE_TIME || ROTATE_TIME
+      )
+      .onUpdate(render)
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .start()
+      .onComplete(() => {
+        resolve();
+      });
   });
 }
 
@@ -685,14 +685,14 @@ function render() {
 function selectCard(duration = 600) {
   rotate = false;
   let width = 140,
-      tag = -(currentLuckys.length - 1) / 2,
-      locates = [];
+    tag = -(currentLuckys.length - 1) / 2,
+    locates = [];
 
   // 计算位置信息, 大于5个分两排显示
   if (currentLuckys.length > 5) {
     let yPosition = [-87, 87],
-        l = selectedCardIndex.length,
-        mid = Math.ceil(l / 2);
+      l = selectedCardIndex.length,
+      mid = Math.ceil(l / 2);
     tag = -(mid - 1) / 2;
     for (let i = 0; i < mid; i++) {
       locates.push({
@@ -722,48 +722,48 @@ function selectCard(duration = 600) {
 
   let text = currentLuckys.map(item => item[1]);
   addQipao(
-      `恭喜${text.join("、")}获得${currentPrize.title}, 新的一年必定旺旺旺。`
+    `恭喜${text.join("、")}获得${currentPrize.title}, 新的一年必定旺旺旺。`
   );
 
   selectedCardIndex.forEach((cardIndex, index) => {
     changeCard(cardIndex, currentLuckys[index]);
     var object = threeDCards[cardIndex];
     new TWEEN.Tween(object.position)
-        .to(
-            {
-              x: locates[index].x,
-              y: locates[index].y * Resolution,
-              z: 2200
-            },
-            Math.random() * duration + duration
-        )
-        .easing(TWEEN.Easing.Exponential.InOut)
-        .start();
+      .to(
+        {
+          x: locates[index].x,
+          y: locates[index].y * Resolution,
+          z: 2200
+        },
+        Math.random() * duration + duration
+      )
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .start();
 
     new TWEEN.Tween(object.rotation)
-        .to(
-            {
-              x: 0,
-              y: 0,
-              z: 0
-            },
-            Math.random() * duration + duration
-        )
-        .easing(TWEEN.Easing.Exponential.InOut)
-        .start();
+      .to(
+        {
+          x: 0,
+          y: 0,
+          z: 0
+        },
+        Math.random() * duration + duration
+      )
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .start();
 
     object.element.classList.add("prize");
     tag++;
   });
 
   new TWEEN.Tween(this)
-      .to({}, duration * 2)
-      .onUpdate(render)
-      .start()
-      .onComplete(() => {
-        // 动画结束后可以操作
-        setLotteryStatus();
-      });
+    .to({}, duration * 2)
+    .onUpdate(render)
+    .start()
+    .onComplete(() => {
+      // 动画结束后可以操作
+      setLotteryStatus();
+    });
 }
 
 /**
@@ -776,45 +776,45 @@ function resetCard(duration = 500) {
 
   selectedCardIndex.forEach(index => {
     let object = threeDCards[index],
-        target = targets.sphere[index];
+      target = targets.sphere[index];
 
     new TWEEN.Tween(object.position)
-        .to(
-            {
-              x: target.position.x,
-              y: target.position.y,
-              z: target.position.z
-            },
-            Math.random() * duration + duration
-        )
-        .easing(TWEEN.Easing.Exponential.InOut)
-        .start();
+      .to(
+        {
+          x: target.position.x,
+          y: target.position.y,
+          z: target.position.z
+        },
+        Math.random() * duration + duration
+      )
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .start();
 
     new TWEEN.Tween(object.rotation)
-        .to(
-            {
-              x: target.rotation.x,
-              y: target.rotation.y,
-              z: target.rotation.z
-            },
-            Math.random() * duration + duration
-        )
-        .easing(TWEEN.Easing.Exponential.InOut)
-        .start();
+      .to(
+        {
+          x: target.rotation.x,
+          y: target.rotation.y,
+          z: target.rotation.z
+        },
+        Math.random() * duration + duration
+      )
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .start();
   });
 
   return new Promise((resolve, reject) => {
     new TWEEN.Tween(this)
-        .to({}, duration * 2)
-        .onUpdate(render)
-        .start()
-        .onComplete(() => {
-          selectedCardIndex.forEach(index => {
-            let object = threeDCards[index];
-            object.element.classList.remove("prize");
-          });
-          resolve();
+      .to({}, duration * 2)
+      .onUpdate(render)
+      .start()
+      .onComplete(() => {
+        selectedCardIndex.forEach(index => {
+          let object = threeDCards[index];
+          object.element.classList.remove("prize");
         });
+        resolve();
+      });
   });
 }
 
@@ -829,9 +829,9 @@ function lottery() {
     selectedCardIndex = [];
     // 当前同时抽取的数目,当前奖品抽完还可以继续抽，但是不记录数据
     let perCount = EACH_COUNT[currentPrizeIndex],
-        luckyData = basicData.luckyUsers[currentPrize.type],
-        leftCount = basicData.leftUsers.length,
-        leftPrizeCount = currentPrize.count - (luckyData ? luckyData.length : 0);
+      luckyData = basicData.luckyUsers[currentPrize.type],
+      leftCount = basicData.leftUsers.length,
+      leftPrizeCount = currentPrize.count - (luckyData ? luckyData.length : 0);
     const cloneLeftUsers = JSON.parse(JSON.stringify(basicData.leftUsers))
     if (leftCount === 0) {
       addQipao("人员已抽完，现在重新设置所有人员可以进行二次抽奖！");
@@ -910,8 +910,8 @@ function saveMock() {
   }
   //当前选中奖品类型
   let type = currentPrize.type,
-      //幸运用户建立池子
-      curLucky = basicData.luckyUsers[type] || [];
+    //幸运用户建立池子
+    curLucky = basicData.luckyUsers[type] || [];
   //幸运用户入池
   curLucky = curLucky.concat(currentLuckys);
   // 上述合并
@@ -956,7 +956,7 @@ function saveData() {
   }
 
   let type = currentPrize.type,
-      curLucky = basicData.luckyUsers[type] || [];
+    curLucky = basicData.luckyUsers[type] || [];
 
   curLucky = curLucky.concat(currentLuckys);
 
@@ -1032,7 +1032,7 @@ function random(num) {
 function changeCard(cardIndex, user) {
   let card = threeDCards[cardIndex].element;
   const nameDom = `<div class="name">${user[1]
-  }</div>`
+    }</div>`
   const companyDom = `<div class="company">${COMPANY}</div>`
   card.innerHTML = nameDom + (COMPANY ? companyDom : '');
 }
@@ -1043,7 +1043,7 @@ function changeCard(cardIndex, user) {
 function shine(cardIndex, color) {
   let card = threeDCards[cardIndex].element;
   card.style.backgroundColor =
-      color || mockData.atmosphereGroupCard();
+    color || mockData.atmosphereGroupCard();
 }
 
 /**
@@ -1051,7 +1051,7 @@ function shine(cardIndex, color) {
  */
 function shineCard() {
   let maxCard = 10,
-      maxUser;
+    maxUser;
   let shineCard = 10 + random(maxCard);
 
   setInterval(() => {
@@ -1062,7 +1062,7 @@ function shineCard() {
     maxUser = basicData.leftUsers.length;
     for (let i = 0; i < shineCard; i++) {
       let index = random(maxUser),
-          cardIndex = random(TOTAL_CARDS);
+        cardIndex = random(TOTAL_CARDS);
       // 当前显示的已抽中名单不进行随机切换
       if (selectedCardIndex.includes(cardIndex)) {
         continue;
@@ -1138,15 +1138,15 @@ function resetMock() {
 function createHighlight() {
   let year = new Date().getFullYear() + "";
   let step = 4,
-      xoffset = 1,
-      yoffset = 1,
-      highlight = [];
+    xoffset = 1,
+    yoffset = 1,
+    highlight = [];
 
   year.split("").forEach(n => {
     highlight = highlight.concat(
-        NUMBER_MATRIX[n].map(item => {
-          return `${item[0] + xoffset}-${item[1] + yoffset}`;
-        })
+      NUMBER_MATRIX[n].map(item => {
+        return `${item[0] + xoffset}-${item[1] + yoffset}`;
+      })
     );
     xoffset += step;
   });
@@ -1176,8 +1176,8 @@ window.onload = function () {
   let music = document.querySelector("#music");
   console.log(music);
   let rotated = 0,
-      stopAnimate = false,
-      musicBox = document.querySelector("#musicBox");
+    stopAnimate = false,
+    musicBox = document.querySelector("#musicBox");
 
   function animate() {
     requestAnimationFrame(function () {
@@ -1192,24 +1192,24 @@ window.onload = function () {
   }
 
   musicBox.addEventListener(
-      "click",
-      function (e) {
-        if (music.paused) {
-          music.play().then(
-              () => {
-                stopAnimate = false;
-                animate();
-              },
-              () => {
-                addQipao("背景音乐自动播放失败，请手动播放！");
-              }
-          );
-        } else {
-          music.pause();
-          stopAnimate = true;
-        }
-      },
-      false
+    "click",
+    function (e) {
+      if (music.paused) {
+        music.play().then(
+          () => {
+            stopAnimate = false;
+            animate();
+          },
+          () => {
+            addQipao("背景音乐自动播放失败，请手动播放！");
+          }
+        );
+      } else {
+        music.pause();
+        stopAnimate = true;
+      }
+    },
+    false
   );
 
   setTimeout(function () {
